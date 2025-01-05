@@ -13,6 +13,8 @@ import { loginSchema, LoginSchema } from 'src/utils/rules'
 import { jwtDecode, type JwtPayload } from 'jwt-decode'
 import { Role } from 'src/types/employee.type'
 import { toast } from 'react-toastify'
+import { Link } from 'react-router-dom'
+import path from 'src/constant/path'
 
 export interface CustomJwtPayload extends JwtPayload {
   Role?: Role
@@ -41,8 +43,6 @@ export default function Login() {
     },
     resolver: yupResolver(schema)
   })
-
-  console.log(errors)
 
   const loginAccountMutation = useMutation({
     mutationFn: (body: { email: string; password: string }) => authApi.loginAccount(body)
@@ -93,13 +93,13 @@ export default function Login() {
   })
 
   return (
-    <div className='relative min-h-screen flex items-center justify-center'>
+    <div className='min-h-screen flex items-center justify-center'>
       <div className='bg-white bg-opacity-90 p-6 rounded-lg shadow-lg w-full max-w-md h-auto py-10'>
         <div className=' mb-6'>
           <div className='text-left text-[35px] ml-5'>PIEDTEAM</div>
           <div className='text-right text-[40px] mr-5'>EXAMINATION</div>
         </div>
-        <form onSubmit={onSubmit} className='space-y-7'>
+        <form onSubmit={onSubmit} className='space-y-5'>
           <div>
             <Title level={5}>Email</Title>
             <Controller
@@ -141,10 +141,14 @@ export default function Login() {
               )}
             />
           </div>
-
           <Button aria-label='btn-login' type='submit' color='primary' className='w-full' isLoading={isLoading}>
             Login
           </Button>
+          <div className='text-center'>
+            <Link to={path.register} className='text-small underline'>
+              Dont no have account ?
+            </Link>
+          </div>
         </form>
       </div>
     </div>

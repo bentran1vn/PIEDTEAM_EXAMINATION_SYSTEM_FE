@@ -3,7 +3,7 @@ import * as yup from 'yup'
 export const loginSchema = yup.object({
   emailOrUserName: yup
     .string()
-    .required('EmployeeId is Required !')
+    .required('emailOrUserName is Required !')
     .min(1, 'Can not under 5 characters')
     .max(160, 'Can not exceed 160 characters'),
   password: yup
@@ -13,7 +13,7 @@ export const loginSchema = yup.object({
     .max(160, 'Can not exceed 160 characters'),
   username: yup
     .string()
-    .required('Password Is Required !')
+    .required('username Is Required !')
     .min(5, 'Can not under 5 characters')
     .max(160, 'Can not exceed 160 characters')
 })

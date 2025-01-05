@@ -4,6 +4,7 @@ import { Suspense, lazy, useContext } from 'react'
 import path from 'src/constant/path'
 import Home from 'src/pages/Home'
 import ExamphaseDetail from 'src/pages/ExamphaseDetail'
+import Register from 'src/pages/Resgiter'
 
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext)
@@ -11,14 +12,8 @@ function ProtectedRoute() {
 }
 
 function RejectedRoute() {
-  const { isAuthenticated, user } = useContext(AppContext)
-  return !isAuthenticated ? (
-    <Outlet />
-  ) : user?.Role == 'Employee' ? (
-    <Navigate to={path.schedule} />
-  ) : (
-    <Navigate to={path.examphase} />
-  )
+  const { isAuthenticated } = useContext(AppContext)
+  return !isAuthenticated ? <Outlet /> : <Navigate to={path.examphase} />
 }
 
 const Login = lazy(() => import('./pages/Login'))
@@ -53,6 +48,16 @@ export default function useRouteElements() {
             <LoginLayout>
               <Suspense>
                 <Login />
+              </Suspense>
+            </LoginLayout>
+          )
+        },
+        {
+          path: path.register,
+          element: (
+            <LoginLayout>
+              <Suspense>
+                <Register />
               </Suspense>
             </LoginLayout>
           )
