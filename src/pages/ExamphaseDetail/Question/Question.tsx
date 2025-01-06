@@ -97,6 +97,14 @@ export default function Question({
           userAnswer.length > 0 &&
           user?.Role == '0' &&
           userAnswer.find((x1) => x1.questionId == x.questionId)?.answerContent && (
+            // <div
+            //   className={classNames('p-2 px-3 rounded-md text-slate-200/95', {
+            //     'bg-green-500 ': userAnswer.find((x1) => x1.questionId == x.questionId)?.isCorrectAnswer,
+            //     'bg-red-500': !userAnswer.find((x1) => x1.questionId == x.questionId)?.isCorrectAnswer
+            //   })}
+            // >
+            //   {userAnswer.find((x1) => x1.questionId == x.questionId)?.isCorrectAnswer ? 'Passed' : 'Failed'}
+            // </div>
             <div
               className={classNames('p-2 px-3 rounded-md text-slate-200/95', {
                 'bg-green-500 ': userAnswer.find((x1) => x1.questionId == x.questionId)?.isCorrectAnswer,

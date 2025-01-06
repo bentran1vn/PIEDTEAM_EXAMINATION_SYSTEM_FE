@@ -298,10 +298,14 @@ export default function ExamphaseDetail() {
                         </div>
                       </div>
                     </div>
-                    {x.isPassed && <div className='bg-green-600 px-5 py-2 text-slate-200 mr-4 rounded-md'>Passed</div>}
-                    {!x.isPassed && (
-                      <div className='bg-red-600 px-5 py-2 text-slate-200 mr-4 rounded-md'>Not Passed</div>
+                    {x.userAnswerResponses.filter((x) => x.isCorrectAnswer).length ==
+                      examphaseData?.data.totalPassRequire && (
+                      <div className='bg-green-600 px-5 py-2 text-slate-200 mr-4 rounded-md'>Passed</div>
                     )}
+                    {!(
+                      x.userAnswerResponses.filter((x) => x.isCorrectAnswer).length ==
+                      examphaseData?.data.totalPassRequire
+                    ) && <div className='bg-red-600 px-5 py-2 text-slate-200 mr-4 rounded-md'>Not Passed</div>}
                   </div>
                 ))}
               </div>
