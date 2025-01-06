@@ -20,8 +20,6 @@ export default function ExamphaseDetail() {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [fileObject, setfileObject] = useState<FileObject>({ file: null, questionId: '' })
 
-  console.log(fileObject)
-
   const { phaseId } = useParams()
   const { user } = useContext(AppContext)
   const navigate = useNavigate()
@@ -60,9 +58,9 @@ export default function ExamphaseDetail() {
 
   const commandExamphaseMutation = useMutation({
     mutationFn: examphaseApi.commandExamphase,
-    onError: (_) => {
-      toast.error('Fail to Start Examphase !', {
-        autoClose: 500
+    onError: (error) => {
+      toast.error((error as any).response.data.detail, {
+        autoClose: 1500
       })
     },
     onSuccess: () => {
@@ -77,9 +75,9 @@ export default function ExamphaseDetail() {
 
   const submitMutation = useMutation({
     mutationFn: examphaseApi.submit,
-    onError: (_) => {
-      toast.error('Fail to Submit Question !', {
-        autoClose: 500
+    onError: (error) => {
+      toast.error((error as any).response.data.detail, {
+        autoClose: 1500
       })
     },
     onSuccess: () => {
@@ -111,9 +109,9 @@ export default function ExamphaseDetail() {
 
   const deleteQuestionMutation = useMutation({
     mutationFn: examphaseApi.deleteQuestion,
-    onError: (_) => {
-      toast.error('Fail to delete Question !', {
-        autoClose: 500
+    onError: (error) => {
+      toast.error((error as any).response.data.detail, {
+        autoClose: 1500
       })
     },
     onSuccess: () => {
@@ -128,6 +126,23 @@ export default function ExamphaseDetail() {
   const handleDeleteQuestion = (questiongId: string) => {
     deleteQuestionMutation.mutate(questiongId)
   }
+
+  const finshxamphaseMutation = useMutation({
+    mutationFn: examphaseApi.finish,
+    onError: (error) => {
+      console.log(error)
+      toast.error((error as any).response.data.detail, {
+        autoClose: 1500
+      })
+    },
+    onSuccess: () => {
+      toast.success('Submit answers successfully !', {
+        autoClose: 500
+      })
+      refetch()
+      // handleClose()
+    }
+  })
 
   return (
     <div className='p-10 w-full h-[full]'>
@@ -229,6 +244,22 @@ export default function ExamphaseDetail() {
               </button>
             </div>
           )}
+          {user?.Role == '0' && (
+            <div>
+              <button
+                onClick={() => {
+                  finshxamphaseMutation.mutate({
+                    studentId: user.UserId as string,
+                    examPhaseId: examphaseData?.data.examphaseId as string
+                  })
+                }}
+                type='button'
+                className='bg-red-500 px-4 py-2 text-white rounded-md'
+              >
+                Finish
+              </button>
+            </div>
+          )}
         </div>
         {/* Question */}
         <div className=''>
@@ -296,6 +327,11 @@ export default function ExamphaseDetail() {
                           Correct: 0{x.userAnswerResponses.filter((x) => x.isCorrectAnswer).length}/0
                           {examphaseData?.data.totalPassRequire}
                         </div>
+                      </div>
+                      <div className='ml-8'>
+                        <div>Start At: {x.startAt}</div>
+                        <div>Finish At: {x.finishAt}</div>
+                        <div>Is Finish: {x.isFinished ? 'True' : 'False'}</div>
                       </div>
                     </div>
                     {x.userAnswerResponses.filter((x) => x.isCorrectAnswer).length ==

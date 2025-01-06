@@ -22,13 +22,14 @@ export default function Examphase({
   const { user } = useContext(AppContext)
   const joinExamphaseMutation = useMutation({
     mutationFn: examphaseApi.joinClass,
-    onError: (_) => {
-      toast.error('Fail to create Examphase !', {
-        autoClose: 500
+    onError: (error) => {
+      console.log(error)
+      toast.error((error as any).response.data.detail, {
+        autoClose: 1500
       })
     },
     onSuccess: () => {
-      toast.success('Create Examphase successfully !', {
+      toast.success('Join Examphase successfully !', {
         autoClose: 500
       })
       refetchList()

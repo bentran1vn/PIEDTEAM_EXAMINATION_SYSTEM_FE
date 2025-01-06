@@ -24,6 +24,7 @@ const examphaseApi = {
     endTime: string
     duration: number
     isPrivate: boolean
+    isWorkFromHome: boolean
   }) {
     return http.post<any>(`${URL}`, body)
   },
@@ -48,6 +49,9 @@ const examphaseApi = {
   joinClass(body: { examPhaseId: string; studentId: string }) {
     return http.post<any>(`${URL3}`, body)
   },
+  finish(body: { examPhaseId: string; studentId: string }) {
+    return http.post<any>(`${URL3}/finish`, body)
+  },
   submit(body: FormData) {
     return http.post<any>(`${URL4}`, body, {
       headers: {
@@ -71,6 +75,7 @@ export interface Examphase {
   isPrivate: boolean
   status: number
   totalCompetitors: number
+  isWorkFromHome: boolean
 }
 
 export enum ExamphaseStatus {
@@ -88,6 +93,7 @@ export interface ExamphaseDetail {
   endDate: string
   duration: number
   isPrivate: boolean
+  isWorkFromHome: boolean
   status: number
   totalCompetitors: number
   totalPassRequire: number
@@ -107,6 +113,9 @@ export interface Competitor {
   id: string
   email: string
   userName: string
+  startAt: string
+  finishAt: string
+  isFinished: boolean
   userAnswerResponses: UserAnswer[]
   isPassed: boolean
 }

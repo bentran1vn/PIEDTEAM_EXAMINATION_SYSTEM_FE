@@ -15,7 +15,15 @@ interface Props {
 
 type FormData = Pick<
   ExamphaseSchema,
-  'code' | 'description' | 'duration' | 'endTime' | 'startTime' | 'isPrivate' | 'title' | 'totalPassRequire'
+  | 'code'
+  | 'description'
+  | 'duration'
+  | 'endTime'
+  | 'startTime'
+  | 'isPrivate'
+  | 'title'
+  | 'totalPassRequire'
+  | 'isWorkFromHome'
 >
 const schema = examphaseSchema.pick([
   'code',
@@ -25,7 +33,8 @@ const schema = examphaseSchema.pick([
   'startTime',
   'isPrivate',
   'title',
-  'totalPassRequire'
+  'totalPassRequire',
+  'isWorkFromHome'
 ])
 
 const IsPrivate = [
@@ -71,7 +80,8 @@ export default function CreateExamphase({ handleClose, refetchExamphases }: Prop
       duration: 0,
       startTime: '',
       endTime: '',
-      isPrivate: false
+      isPrivate: false,
+      isWorkFromHome: false
     }
   })
 
@@ -313,6 +323,37 @@ export default function CreateExamphase({ handleClose, refetchExamphases }: Prop
                       checked={field.value === domain.value}
                       onChange={(_) => {
                         setValue('isPrivate', domain.value)
+                      }}
+                      className='h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-0 focus:outline-none dark:border-gray-600 dark:bg-gray-700'
+                    />
+                    <label
+                      htmlFor={`radio-${domain.value}`}
+                      className='ml-2 font-medium text-gray-900 dark:text-gray-300'
+                    >
+                      {domain.label}
+                    </label>
+                  </>
+                )}
+              />
+            </div>
+          ))}
+        </div>
+        {/* IsWork */}
+        <div className='my-2 flex items-center border-b-2 py-4'>
+          <div className='font-semibold'>Is Work From Home:</div>
+          {IsPrivate.map((domain, index) => (
+            <div className='ps-4' key={index}>
+              <Controller
+                name='isWorkFromHome'
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <input
+                      id={`radio-${domain.value}`}
+                      type='radio'
+                      checked={field.value === domain.value}
+                      onChange={(_) => {
+                        setValue('isWorkFromHome', domain.value)
                       }}
                       className='h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-0 focus:outline-none dark:border-gray-600 dark:bg-gray-700'
                     />
