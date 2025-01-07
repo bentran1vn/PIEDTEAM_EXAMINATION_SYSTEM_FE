@@ -105,6 +105,7 @@ export default function ExamphaseDetail() {
     formData.append('StudentFile', fileObject.file)
 
     submitMutation.mutate(formData)
+    setfileObject({ file: null, questionId: '' })
   }
 
   const deleteQuestionMutation = useMutation({
@@ -248,10 +249,13 @@ export default function ExamphaseDetail() {
             <div>
               <button
                 onClick={() => {
-                  finshxamphaseMutation.mutate({
-                    studentId: user.UserId as string,
-                    examPhaseId: examphaseData?.data.examphaseId as string
-                  })
+                  const confirmed = window.confirm('Are you sure you want to finish this exam phase?')
+                  if (confirmed) {
+                    finshxamphaseMutation.mutate({
+                      studentId: user.UserId as string,
+                      examPhaseId: examphaseData?.data.examphaseId as string
+                    })
+                  }
                 }}
                 type='button'
                 className='bg-red-500 px-4 py-2 text-white rounded-md'

@@ -39,7 +39,7 @@ export default function Examphase({
   return (
     <div
       key={x.id}
-      className='grid grid-cols-12 mr-10 ml-10 mt-5 bg-sky-500/10 text-slate-600 p-3 rounded-md h-[8%] items-center border border-black/30'
+      className='grid grid-cols-12 mr-10 ml-10 mt-5 bg-sky-500/10 text-slate-600 p-3 rounded-md h-auto items-center border border-black/30'
     >
       <div className='col-span-1 border-r border-r-slate-600/50 text-xl pl-3'>{index}</div>
       <Link to={`${path.examphase}/${x.id}`} className='col-span-4 border-r border-r-slate-600/50 pl-3'>
