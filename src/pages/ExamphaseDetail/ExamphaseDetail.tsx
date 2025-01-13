@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import classNames from 'classnames'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import examphaseApi, { ExamphaseStatus } from 'src/apis/examphase.api'
@@ -17,6 +17,7 @@ export interface FileObject {
 }
 
 export default function ExamphaseDetail() {
+  const [remainingTime, setRemainingTime] = useState<number>(0)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [fileObject, setfileObject] = useState<FileObject>({ file: null, questionId: '' })
 
@@ -145,6 +146,45 @@ export default function ExamphaseDetail() {
     }
   })
 
+  console.log(examphaseData?.data.endDate)
+
+  useEffect(() => {
+    // if (examphaseData?.data.duration) setRemainingTime(examphaseData?.data.duration * 60)
+    if (examphaseData?.data.endDate) {
+      const now = new Date()
+      const targetDate = new Date(examphaseData?.data.endDate)
+      const adjustedDate = new Date(targetDate.getTime() - 7 * 60 * 60 * 1000)
+
+      const durationMs = adjustedDate.getTime() - now.getTime() // Difference in milliseconds
+
+      if (durationMs > 0) {
+        const durationSeconds = Math.floor(durationMs / 1000)
+        setRemainingTime(durationSeconds)
+      } else {
+        console.log('The end date has already passed.')
+      }
+    }
+  }, [examphaseData?.data])
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout
+    if (remainingTime > 0) {
+      timer = setInterval(() => {
+        setRemainingTime((prevTime) => prevTime - 1)
+      }, 1000)
+    }
+    // } else if (remainingTime === 0) {
+    //   setRemainingTime(1000)
+    // }
+    return () => clearInterval(timer)
+  }, [remainingTime])
+
+  const formatTime = (timeInSeconds: number): string => {
+    const minutes = Math.floor(timeInSeconds / 60)
+    const seconds = timeInSeconds % 60
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
+  }
+
   return (
     <div className='p-10 w-full h-[full]'>
       <div className='bg-slate-200 shadow-sm w-full h-full rounded-md'>
@@ -159,9 +199,15 @@ export default function ExamphaseDetail() {
         </div>
         {/* Detail */}
         <div className='ml-10 mr-10 mt-5 bg-sky-500/10 p-5 border border-black/30 rounded-sm'>
-          <div className='flex items-center justify-start mb-2'>
-            <div className='text-xl mr-2 font-normal'>Title: </div>
-            <div className='text-md font-light'>{examphaseData?.data.title}</div>
+          <div className='flex items-center justify-between mb-2'>
+            <div className='flex items-center justify-start'>
+              <div className='text-xl mr-2 font-normal'>Title: </div>
+              <div className='text-md font-light'>{examphaseData?.data.title}</div>
+            </div>
+            <div className='mr-3'>
+              <span className='mr-3'>Remain Time</span>
+              <span className='bg-slate-500 py-2 px-5 text-xl text-white'>{formatTime(remainingTime)}</span>
+            </div>
           </div>
           <div className='flex items-center justify-start mb-2'>
             <div className='text-xl mr-2 font-normal'>Description: </div>

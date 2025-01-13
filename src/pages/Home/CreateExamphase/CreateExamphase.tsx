@@ -260,7 +260,7 @@ export default function CreateExamphase({ handleClose, refetchExamphases }: Prop
           {errors.startTime && <p className='text-sm text-red-500'>{errors.startTime.message}</p>}
         </div>
         <div className='my-4 border-b-2 pb-2'>
-          <p className='font-semibold mb-2'>Start time:</p>
+          <p className='font-semibold mb-2'>End time:</p>
           <div>
             <Controller
               control={control}
